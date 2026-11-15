@@ -1,0 +1,1189 @@
+<Window x:Class="LaptopInputControl.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Laptop Input Shield &amp; Controller" 
+        Height="720" Width="1060"
+        MinHeight="580" MinWidth="860"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="{DynamicResource ThemeBg}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="42"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="0"
+                      CornerRadius="0" />
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <!-- Modern Card Style -->
+        <Style x:Key="ModernCard" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeCardBg}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="14" />
+        </Style>
+
+        <!-- Nested Surface Style -->
+        <Style x:Key="NestedSurface" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceNested}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderSubtle}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="10" />
+        </Style>
+
+        <!-- Window Control Button (Min/Max) -->
+        <Style x:Key="WindowControlButton" TargetType="Button">
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Height" Value="42" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextPrimary}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Arrow" />
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="BtnBg" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BtnBg" Property="Background" Value="{DynamicResource ThemeBorderSubtle}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BtnBg" Property="Background" Value="{DynamicResource ThemeBorder}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Window Close Button -->
+        <Style x:Key="WindowCloseButton" TargetType="Button">
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Height" Value="42" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextPrimary}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Arrow" />
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="BtnBg" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BtnBg" Property="Background" Value="#E81123" />
+                                <Setter Property="Foreground" Value="#FFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BtnBg" Property="Background" Value="#BA0F1D" />
+                                <Setter Property="Foreground" Value="#FFFFFF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern Action Button -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceNested}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextPrimary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="BtnBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BtnBorder" Property="Background" Value="{DynamicResource ThemeBorder}" />
+                                <Setter TargetName="BtnBorder" Property="BorderBrush" Value="{DynamicResource ThemeAccent}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BtnBorder" Property="Background" Value="{DynamicResource ThemeAccent}" />
+                                <Setter TargetName="BtnBorder" Property="BorderBrush" Value="{DynamicResource ThemeAccentGlow}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Red Emergency Button -->
+        <Style x:Key="EmergencyButton" TargetType="Button">
+            <Setter Property="Background" Value="#DC2626" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#EF4444" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="11,5" />
+            <Setter Property="FontSize" Value="10.5" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="BtnBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#EF4444" BlurRadius="6" ShadowDepth="0" Opacity="0.3" />
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BtnBorder" Property="Background" Value="#B91C1C" />
+                                <Setter TargetName="BtnBorder" Property="BorderBrush" Value="#F87171" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BtnBorder" Property="Background" Value="#991B1B" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Tab Item Style -->
+        <Style x:Key="ModernTabItem" TargetType="TabItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSecondary}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="14,7" />
+            <Setter Property="Margin" Value="0,0,4,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="TabBorder" Background="Transparent" CornerRadius="6" Padding="{TemplateBinding Padding}" Margin="{TemplateBinding Margin}">
+                            <ContentPresenter ContentSource="Header" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="{DynamicResource ThemeAccent}" />
+                                <Setter Property="Foreground" Value="#FFFFFF" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="False" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="TabBorder" Property="Background" Value="{DynamicResource ThemeBorderSubtle}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ThemeTextPrimary}" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Modern Toggle Switch Button -->
+        <Style x:Key="ToggleSwitch" TargetType="CheckBox">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Grid Width="46" Height="24">
+                                <Border x:Name="Track" Background="{DynamicResource ThemeBorderSubtle}" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorder}" />
+                                <Ellipse x:Name="Thumb" Width="18" Height="18" Fill="#C8CBD8" HorizontalAlignment="Left" Margin="3,0,0,0">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect BlurRadius="4" ShadowDepth="1" Opacity="0.4" />
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                            </Grid>
+                            <ContentPresenter Margin="8,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Track" Property="Background" Value="#DC2626" />
+                                <Setter TargetName="Track" Property="BorderBrush" Value="#EF4444" />
+                                <Setter TargetName="Thumb" Property="Fill" Value="#FFFFFF" />
+                                <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right" />
+                                <Setter TargetName="Thumb" Property="Margin" Value="0,0,3,0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- Outer Window Border -->
+    <Border x:Name="MainOuterBorder" Background="{DynamicResource ThemeBg}" BorderBrush="{DynamicResource ThemeBorder}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="42" />  <!-- Custom Window Titlebar -->
+                <RowDefinition Height="*" />   <!-- Main Content Area -->
+                <RowDefinition Height="32" />  <!-- Status Footer -->
+            </Grid.RowDefinitions>
+
+            <!-- ==================================================== -->
+            <!-- 1. CUSTOM WINDOW TITLEBAR (DOCKPANEL LAYOUT)         -->
+            <!-- ==================================================== -->
+            <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBg}" BorderBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="0,0,0,1" Height="42">
+                <DockPanel LastChildFill="True">
+                    
+                    <!-- 1. DOCKED TO FAR RIGHT: MINIMIZE, MAXIMIZE, CLOSE (ABSOLUTE RIGHT EDGE PRIORITY) -->
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Stretch">
+                        <!-- MINIMIZE BUTTON -->
+                        <Button x:Name="BtnMinimize" Style="{StaticResource WindowControlButton}" Click="OnMinimizeClicked" ToolTip="Minimize">
+                            <TextBlock Text="&#xE921;" FontFamily="Segoe MDL2 Assets, Segoe UI Symbol, Arial" FontSize="10.5" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Button>
+
+                        <!-- MAXIMIZE / RESTORE BUTTON -->
+                        <Button x:Name="BtnMaximize" Style="{StaticResource WindowControlButton}" Click="OnMaximizeClicked" ToolTip="Maximize">
+                            <TextBlock x:Name="TxtMaximizeGlyph" Text="&#xE922;" FontFamily="Segoe MDL2 Assets, Segoe UI Symbol, Arial" FontSize="10.5" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Button>
+
+                        <!-- CLOSE BUTTON -->
+                        <Button x:Name="BtnClose" Style="{StaticResource WindowCloseButton}" Click="OnCloseClicked" ToolTip="Close Application">
+                            <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets, Segoe UI Symbol, Arial" FontSize="10.5" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Button>
+                    </StackPanel>
+
+                    <!-- 2. DOCKED RIGHT NEXT TO WINDOW BUTTONS: EMERGENCY RESTORE & THEME SELECTOR -->
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Center" Margin="0,0,12,0">
+                        <!-- Emergency Restore Button -->
+                        <Button Style="{StaticResource EmergencyButton}" Click="OnEmergencyRestoreClicked" 
+                                Margin="0,0,8,0" VerticalAlignment="Center"
+                                ToolTip="Instantly restores all keyboard keys and mouse buttons system-wide (Hotkeys: Ctrl+Shift+Alt+F12 or hold Escape for 2.5s)">
+                            <TextBlock Text="🚨 EMERGENCY RESTORE" />
+                        </Button>
+
+                        <!-- Theme Selector -->
+                        <ComboBox x:Name="CmbThemeSelector" Width="114" Height="26" VerticalAlignment="Center"
+                                  SelectionChanged="OnThemeSelectorChanged"
+                                  ToolTip="Switch Theme (Obsidian, OLED Black, Midnight Blue, Light)">
+                            <ComboBoxItem Content="🌑 Obsidian" IsSelected="True" />
+                            <ComboBoxItem Content="🖤 OLED" />
+                            <ComboBoxItem Content="🌌 Midnight" />
+                            <ComboBoxItem Content="☀️ Light" />
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- DOCKED TO LEFT: BRAND & TITLE -->
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,16,0">
+                        <Border Width="26" Height="26" CornerRadius="6" Margin="0,0,8,0">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#2563EB" Offset="0" />
+                                    <GradientStop Color="#1D4ED8" Offset="1" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <TextBlock Text="🛡️" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Text="LAPTOP INPUT SHIELD" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource ThemeTextPrimary}" VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <!-- CENTER: STATUS BADGES (Auto-centers and gracefully shrinks if width is constrained) -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!-- Keyboard Status Pill -->
+                        <Border x:Name="PillKeyboard" Background="{DynamicResource ThemeActiveGreenBg}" BorderBrush="{DynamicResource ThemeActiveGreen}" BorderThickness="1" CornerRadius="10" Padding="8,2" Margin="0,0,6,0">
+                            <TextBlock x:Name="TxtPillKeyboard" Text="⌨️ KEYBOARD: ACTIVE" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" />
+                        </Border>
+                        <!-- Mouse Status Pill -->
+                        <Border x:Name="PillMouse" Background="{DynamicResource ThemeActiveGreenBg}" BorderBrush="{DynamicResource ThemeActiveGreen}" BorderThickness="1" CornerRadius="10" Padding="8,2" Margin="0,0,6,0">
+                            <TextBlock x:Name="TxtPillMouse" Text="🖱️ MOUSE: ACTIVE" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" />
+                        </Border>
+                        <!-- Dell Hardware Status Pill -->
+                        <Border Background="#122A3A" BorderBrush="#06B6D4" BorderThickness="1" CornerRadius="10" Padding="8,2">
+                            <TextBlock x:Name="TxtPillHardware" Text="💻 DELL TOUCHPAD: OK" FontSize="10" FontWeight="Bold" Foreground="#06B6D4" />
+                        </Border>
+                    </StackPanel>
+
+                </DockPanel>
+            </Border>
+
+            <!-- ==================================================== -->
+            <!-- 2. MAIN CONTENT AREA (TAB CONTROL)                   -->
+            <!-- ==================================================== -->
+            <Grid Grid.Row="1" Margin="14,10,14,8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- TAB BAR CONTAINER -->
+                <Border Grid.Row="0" Background="{DynamicResource ThemeHeaderBg}" BorderBrush="{DynamicResource ThemeBorder}" BorderThickness="1" CornerRadius="8" Padding="3" Margin="0,0,0,10">
+                    <TabControl x:Name="MainTabs" Background="Transparent" BorderThickness="0">
+                        <TabItem Header="⚡ Dashboard &amp; Master Switches" Style="{StaticResource ModernTabItem}" />
+                        <TabItem Header="⌨️ Precise Keyboard Matrix" Style="{StaticResource ModernTabItem}" />
+                        <TabItem Header="🔄 Key Remapping (Broken Key Fix)" Style="{StaticResource ModernTabItem}" />
+                        <TabItem Header="🖱️ Precise Mouse &amp; Trackpad Matrix" Style="{StaticResource ModernTabItem}" />
+                        <TabItem Header="💻 Laptop Built-in Hardware (PnP)" Style="{StaticResource ModernTabItem}" />
+                        <TabItem Header="🎯 Live Test Zone &amp; Monitor" Style="{StaticResource ModernTabItem}" />
+                    </TabControl>
+                </Border>
+
+                <!-- TAB CONTENTS HOST -->
+                <Grid Grid.Row="1">
+                    
+                    <!-- ============================================== -->
+                    <!-- TAB 0 CONTENT: DASHBOARD & MASTER SWITCHES     -->
+                    <!-- ============================================== -->
+                    <ScrollViewer x:Name="TabContentDashboard" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="2,0,2,6">
+                            
+                            <!-- MASTER HERO TOGGLE CARDS (GRID OF 2) -->
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="14" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Master Keyboard Hero Card -->
+                                <Border Grid.Column="0" Style="{StaticResource ModernCard}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                                            <Border Width="34" Height="34" Background="{DynamicResource ThemeSurfaceNested}" BorderBrush="{DynamicResource ThemeBorder}" BorderThickness="1" CornerRadius="8" Margin="0,0,10,0">
+                                                <TextBlock Text="⌨️" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="Master Laptop Keyboard" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                                <TextBlock Text="Global hardware &amp; kernel keystroke filter" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" />
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Switch Surface -->
+                                        <Border Grid.Row="1" Style="{StaticResource NestedSurface}" Margin="0,0,0,10">
+                                            <Grid>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock x:Name="TxtMasterKeyboardStatus" Text="Status: KEYBOARD ACTIVE" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" FontSize="12.5" />
+                                                    <TextBlock Text="Swallows all keystrokes at Windows low-level input layer" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                                <CheckBox x:Name="ChkMasterKeyboard" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" Click="OnMasterKeyboardToggleChanged">
+                                                    <TextBlock Text="BLOCK ALL" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                                </CheckBox>
+                                            </Grid>
+                                        </Border>
+
+                                        <TextBlock Grid.Row="2" x:Name="TxtKeyboardBlockedCount" Text="Individual keys blocked: 0" FontSize="11" Foreground="{DynamicResource ThemeTextSecondary}" />
+                                    </Grid>
+                                </Border>
+
+                                <!-- Master Mouse & Touchpad Hero Card -->
+                                <Border Grid.Column="2" Style="{StaticResource ModernCard}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                                            <Border Width="34" Height="34" Background="{DynamicResource ThemeSurfaceNested}" BorderBrush="{DynamicResource ThemeBorder}" BorderThickness="1" CornerRadius="8" Margin="0,0,10,0">
+                                                <TextBlock Text="🖱️" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="Master Touchpad &amp; Mouse" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                                <TextBlock Text="Global pointer, button &amp; gesture filter" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" />
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <!-- Switch Surface -->
+                                        <Border Grid.Row="1" Style="{StaticResource NestedSurface}" Margin="0,0,0,10">
+                                            <Grid>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock x:Name="TxtMasterMouseStatus" Text="Status: TOUCHPAD / MOUSE ACTIVE" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" FontSize="12.5" />
+                                                    <TextBlock Text="Drops clicks, pointer tracking movements &amp; scroll wheels" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                                <CheckBox x:Name="ChkMasterMouse" Style="{StaticResource ToggleSwitch}" HorizontalAlignment="Right" Click="OnMasterMouseToggleChanged">
+                                                    <TextBlock Text="BLOCK ALL" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                                </CheckBox>
+                                            </Grid>
+                                        </Border>
+
+                                        <TextBlock Grid.Row="2" x:Name="TxtMouseBlockedCount" Text="Individual mouse actions blocked: 0" FontSize="11" Foreground="{DynamicResource ThemeTextSecondary}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+
+                            <!-- QUICK PRESET MODES -->
+                            <Border Style="{StaticResource ModernCard}" Margin="0,0,0,14">
+                                <StackPanel>
+                                    <TextBlock Text="⚡ QUICK PRESETS &amp; PROFILES" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" Margin="0,0,0,10" />
+                                    <WrapPanel>
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,8,6" Click="OnPresetLockKeyboard">
+                                            <TextBlock Text="🔒 Lock Keyboard Only" />
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,8,6" Click="OnPresetUnlockKeyboard">
+                                            <TextBlock Text="🔓 Unlock Keyboard" />
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,8,6" Click="OnPresetLockTouchpad">
+                                            <TextBlock Text="🔒 Lock Touchpad / Mouse Only" />
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,8,6" Click="OnPresetUnlockTouchpad">
+                                            <TextBlock Text="🔓 Unlock Touchpad / Mouse" />
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,8,6" Click="OnPresetGameMode">
+                                            <TextBlock Text="🎮 Game Mode (Lock Win Key &amp; CapsLock)" />
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,8,6" Click="OnPresetCleanMode">
+                                            <TextBlock Text="🧹 Cleaning Mode (Lock Input for 30s)" />
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,8,6" Click="OnPresetTypingMode">
+                                            <TextBlock Text="✍️ Palm Rest Mode (Disable Cursor Move Only)" />
+                                        </Button>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- SAFETY AUTO-RESTORE TIMER -->
+                            <Border Style="{StaticResource ModernCard}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                            <TextBlock Text="🛡️ Safety Auto-Restore Failsafe Timer" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <Border Background="#1C2D42" CornerRadius="4" Padding="5,1" Margin="8,0,0,0">
+                                                <TextBlock Text="Lockout Prevention" FontSize="9.5" FontWeight="Bold" Foreground="#38BDF8" />
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Text="Automatically re-enables all inputs if not confirmed. Prevents ever getting trapped without keyboard or mouse!" FontSize="11" Foreground="{DynamicResource ThemeTextSecondary}" />
+                                        
+                                        <TextBlock x:Name="TxtCountdownTimer" Text="" FontSize="12.5" FontWeight="Bold" Foreground="#F59E0B" Margin="0,5,0,0" Visibility="Collapsed" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <ComboBox x:Name="CmbAutoRevert" Width="140" Height="28" Margin="0,0,8,0" SelectionChanged="OnAutoRevertChanged">
+                                            <ComboBoxItem Content="Disabled (Manual)" IsSelected="True" />
+                                            <ComboBoxItem Content="30 Seconds" />
+                                            <ComboBoxItem Content="1 Minute" />
+                                            <ComboBoxItem Content="3 Minutes" />
+                                            <ComboBoxItem Content="5 Minutes" />
+                                        </ComboBox>
+                                        <Button x:Name="BtnCancelCountdown" Style="{StaticResource ActionButton}" Content="Cancel Timer" Click="OnCancelCountdownClicked" Visibility="Collapsed" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ============================================== -->
+                    <!-- TAB 1 CONTENT: PRECISE KEYBOARD MATRIX         -->
+                    <!-- ============================================== -->
+                    <Grid x:Name="TabContentKeyboard" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!-- TARGET DEVICE SCOPE FILTER -->
+                        <Border Grid.Row="0" Style="{StaticResource ModernCard}" Margin="0,0,0,8" Padding="12,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="🎯 TARGET DEVICE SCOPE:" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource ThemeAccent}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                    <ComboBox x:Name="CmbTargetDeviceScope" Width="300" Height="28" SelectionChanged="OnTargetDeviceScopeChanged" ToolTip="Choose whether locks apply to Built-in Laptop, External USB/Bluetooth, or All Devices">
+                                        <ComboBoxItem Content="🌐 All Devices (Global Lock across Built-in &amp; External)" IsSelected="True" />
+                                        <ComboBoxItem Content="💻 Built-in Laptop Only (Keep External USB &amp; BT Active)" />
+                                        <ComboBoxItem Content="🔌 External Devices Only (USB / Wire / Bluetooth)" />
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <Border Grid.Column="2" Background="{DynamicResource ThemeSurfaceNested}" BorderBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="1" CornerRadius="6" Padding="10,4">
+                                    <TextBlock x:Name="TxtScopeDescription" Text="Locks apply globally to laptop &amp; all external keyboards" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" VerticalAlignment="Center" />
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!-- Category Quick Filters -->
+                        <Border Grid.Row="1" Style="{StaticResource ModernCard}" Margin="0,0,0,8" Padding="10,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="Category Filters:" FontWeight="SemiBold" FontSize="11.5" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="{DynamicResource ThemeTextSecondary}" />
+                                    <Button Style="{StaticResource ActionButton}" Content="Function (F1-F12)" Margin="0,0,5,0" Click="OnToggleCategoryFunction" />
+                                    <Button Style="{StaticResource ActionButton}" Content="Windows Key" Margin="0,0,5,0" Click="OnToggleCategoryWin" />
+                                    <Button Style="{StaticResource ActionButton}" Content="Caps Lock" Margin="0,0,5,0" Click="OnToggleCategoryCaps" />
+                                    <Button Style="{StaticResource ActionButton}" Content="Arrow Keys" Margin="0,0,5,0" Click="OnToggleCategoryArrows" />
+                                    <Button Style="{StaticResource ActionButton}" Content="Numpad" Margin="0,0,5,0" Click="OnToggleCategoryNumpad" />
+                                    <Button Style="{StaticResource ActionButton}" Content="Alphabet (A-Z)" Margin="0,0,5,0" Click="OnToggleCategoryAlpha" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Style="{StaticResource ActionButton}" Content="🔒 Block All Keys" Margin="0,0,6,0" Click="OnBlockAllKeysClicked" />
+                                    <Button Style="{StaticResource ActionButton}" Content="🔓 Enable All Keys" Click="OnEnableAllKeysClicked" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- VISUAL INTERACTIVE KEYBOARD LAYOUT -->
+                        <Border Grid.Row="2" Style="{StaticResource ModernCard}" Margin="0,0,0,8" Padding="12,10">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Grid Margin="0,0,0,6" Width="980">
+                                    <TextBlock Text="VISUAL LAPTOP KEYBOARD (Click any key to Toggle ON/OFF):" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeTextSecondary}" VerticalAlignment="Center" />
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <Border Width="11" Height="11" Background="{DynamicResource ThemeKeyNormalBg}" BorderBrush="{DynamicResource ThemeKeyNormalBorder}" BorderThickness="1.5" CornerRadius="2" Margin="0,0,4,0" />
+                                        <TextBlock Text="Enabled" FontSize="9.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,0,10,0" />
+                                        <Border Width="11" Height="11" Background="{DynamicResource ThemeBlockedRedBg}" BorderBrush="{DynamicResource ThemeBlockedRed}" BorderThickness="1.5" CornerRadius="2" Margin="0,0,4,0" />
+                                        <TextBlock Text="Blocked (Disabled)" FontSize="9.5" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                    </StackPanel>
+                                </Grid>
+                                
+                                <!-- Keyboard Chassis Frame -->
+                                <Border Background="{DynamicResource ThemeSurfaceNested}" BorderBrush="{DynamicResource ThemeBorder}" BorderThickness="1.5" CornerRadius="10" Padding="8">
+                                    <ItemsControl x:Name="KeyboardCanvasItems">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Canvas Width="980" Height="250" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemContainerStyle>
+                                            <Style TargetType="ContentPresenter">
+                                                <Setter Property="Canvas.Left" Value="{Binding X}" />
+                                                <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                                            </Style>
+                                        </ItemsControl.ItemContainerStyle>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Tag="{Binding}" Width="{Binding KeyWidth}" Height="{Binding KeyHeight}" 
+                                                        Click="OnKeyButtonClicked" Cursor="Hand" Margin="1">
+                                                    <Button.Template>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{Binding KeyBackground}" BorderBrush="{Binding KeyBorder}" 
+                                                                    BorderThickness="1.5" CornerRadius="4" Padding="2">
+                                                                <Grid>
+                                                                    <TextBlock Text="{Binding SubLabel}" FontSize="7.5" Foreground="{DynamicResource ThemeTextSecondary}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,2,0" />
+                                                                    <TextBlock Text="{Binding Label}" FontSize="9.5" FontWeight="SemiBold" Foreground="{Binding KeyTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                                                </Grid>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Button.Template>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- SEARCHABLE KEY LIST GRID -->
+                        <Border Grid.Row="3" Style="{StaticResource ModernCard}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Margin="0,0,0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="Search Key: " FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,6,0" Foreground="{DynamicResource ThemeTextSecondary}" FontSize="11" />
+                                        <TextBox x:Name="TxtKeySearch" Width="200" Height="24" Padding="5,2" TextChanged="OnKeySearchChanged" FontSize="11" />
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Column="1" Text="Tip: Every single key has an individual independent state." FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" VerticalAlignment="Center" />
+                                </Grid>
+
+                                <DataGrid Grid.Row="1" x:Name="GridKeyItems" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" 
+                                          Background="{DynamicResource ThemeSurfaceNested}" 
+                                          GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource ThemeBorderSubtle}" 
+                                          BorderThickness="0" HeadersVisibility="Column">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Key Name" Binding="{Binding Label}" Width="150" IsReadOnly="True" />
+                                        <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="130" IsReadOnly="True" />
+                                        <DataGridTextColumn Header="VK Code" Binding="{Binding HexCode}" Width="100" IsReadOnly="True" />
+                                        <DataGridTemplateColumn Header="Status" Width="120">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding StatusText}" Foreground="{Binding StatusColor}" FontWeight="Bold" Margin="6,2" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Action" Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="Toggle State" Style="{StaticResource ActionButton}" Padding="10,2" Margin="4,2" Click="OnGridKeyToggleClicked" Tag="{Binding}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- ============================================== -->
+                    <!-- TAB 2 CONTENT: KEY REMAPPING & BROKEN KEY FIX  -->
+                    <!-- ============================================== -->
+                    <ScrollViewer x:Name="TabContentRemap" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="2,0,2,6">
+                            
+                            <!-- Header Banner -->
+                            <Border Style="{StaticResource ModernCard}" Margin="0,0,0,12" Padding="14,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="🔄 KEY REMAPPING &amp; BROKEN KEY RESCUE" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                        <TextBlock Text="Has a key stopped working on your laptop (e.g. 'C' key)? Reassign another key (like '1', 'Right Ctrl', or 'Caps Lock') to type that letter instead!" FontSize="11" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,3,0,0" />
+                                    </StackPanel>
+                                    <Border Grid.Column="1" Background="{DynamicResource ThemeActiveGreenBg}" BorderBrush="{DynamicResource ThemeActiveGreen}" BorderThickness="1" CornerRadius="8" Padding="10,4" VerticalAlignment="Center">
+                                        <TextBlock Text="⚡ ZERO LATENCY INJECTION" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeActiveGreen}" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Rule Creator & Quick Presets -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.4*" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Custom Rule Creator -->
+                                <Border Grid.Column="0" Style="{StaticResource ModernCard}">
+                                    <StackPanel>
+                                        <TextBlock Text="➕ CREATE NEW REMAP RULE" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeAccent}" Margin="0,0,0,10" />
+
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="30" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Source Key -->
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="When I Press (Physical Key):" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="CmbRemapSource" Height="30" />
+                                            </StackPanel>
+
+                                            <!-- Arrow -->
+                                            <TextBlock Grid.Column="1" Text="➔" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeAccent}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,18,0,0" />
+
+                                            <!-- Target Key -->
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Action / Key to Type Instead:" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,0,0,4" />
+                                                <ComboBox x:Name="CmbRemapTarget" Height="30" />
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,0">
+                                            <Button Style="{StaticResource ActionButton}" Content="➕ Add / Update Remap Rule" Padding="14,6" Click="OnAddRemapRuleClicked" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Quick Emergency Presets for Broken Keys -->
+                                <Border Grid.Column="2" Style="{StaticResource ModernCard}">
+                                    <StackPanel>
+                                        <TextBlock Text="⚡ ONE-CLICK EMERGENCY PRESETS" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" Margin="0,0,0,10" />
+
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,0,6" HorizontalContentAlignment="Left" Padding="10,6" Click="OnPresetRemap1ToC">
+                                            <TextBlock Text="🔧 Broken 'C' Key ➔ Remap '1' to Type 'C'" />
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,0,6" HorizontalContentAlignment="Left" Padding="10,6" Click="OnPresetRemapCtrlToEnter">
+                                            <TextBlock Text="🔧 Broken 'Enter' ➔ Remap 'Right Ctrl' to 'Enter'" />
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButton}" Margin="0,0,0,6" HorizontalContentAlignment="Left" Padding="10,6" Click="OnPresetRemapAltToSpace">
+                                            <TextBlock Text="🔧 Broken 'Space' ➔ Remap 'Right Alt' to 'Space'" />
+                                        </Button>
+                                        <Button Style="{StaticResource ActionButton}" HorizontalContentAlignment="Left" Padding="10,6" Click="OnPresetRemapCapsToEsc">
+                                            <TextBlock Text="🔧 Vim / Coding ➔ Remap 'Caps Lock' to 'Esc'" />
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Active Remappings Table -->
+                            <Border Style="{StaticResource ModernCard}" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="📋 ACTIVE KEY REMAPPINGS" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <TextBlock x:Name="TxtRemapCount" Text=" (0 rules active)" FontSize="11" Foreground="{DynamicResource ThemeTextSecondary}" Margin="6,2,0,0" />
+                                        </StackPanel>
+                                        <Button HorizontalAlignment="Right" Style="{StaticResource ActionButton}" Content="Clear All Remaps" Padding="10,3" Click="OnClearAllRemapsClicked" />
+                                    </Grid>
+
+                                    <DataGrid x:Name="GridRemapRules" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                              Background="{DynamicResource ThemeSurfaceNested}" 
+                                              GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="0"
+                                              MaxHeight="220" HeadersVisibility="Column" IsReadOnly="True">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Physical Key Pressed" Binding="{Binding SourceName}" Width="180" />
+                                            <DataGridTextColumn Header="➔" Binding="{Binding MappingArrow}" Width="50" />
+                                            <DataGridTextColumn Header="Actual Output Key Produced" Binding="{Binding TargetName}" Width="220" />
+                                            <DataGridTextColumn Header="Purpose / Note" Binding="{Binding Description}" Width="*" />
+                                            <DataGridTemplateColumn Header="Action" Width="110">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Content="Delete Rule" Style="{StaticResource ActionButton}" Padding="8,2" Click="OnDeleteRemapRuleClicked" Tag="{Binding}" />
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Live Remap Test Scratchpad -->
+                            <Border Style="{StaticResource ModernCard}">
+                                <StackPanel>
+                                    <TextBlock Text="🧪 LIVE TEST SCRATCHPAD (Test Your Remapped Keys Here):" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeAccent}" Margin="0,0,0,4" />
+                                    <TextBlock Text="Click inside and press your remapped key (e.g. press '1' to verify that 'C' is typed!)." FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,0,0,6" />
+                                    <TextBox x:Name="TxtRemapTestBox" Height="70" AcceptsReturn="True" TextWrapping="Wrap" Padding="8" FontSize="13" />
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,0">
+                                        <Button Style="{StaticResource ActionButton}" Content="Clear Box" Padding="10,2" Click="OnClearRemapTestBoxClicked" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ============================================== -->
+                    <!-- TAB 3 CONTENT: PRECISE MOUSE & TRACKPAD        -->
+                    <!-- ============================================== -->
+                    <ScrollViewer x:Name="TabContentMouse" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="2,0,2,6">
+                            
+                            <TextBlock Text="GRANULAR TOUCHPAD &amp; MOUSE ACTION TOGGLES" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource ThemeTextPrimary}" Margin="0,0,0,10" />
+
+                            <!-- TARGET DEVICE SCOPE SELECTION FOR MOUSE -->
+                            <Border Style="{StaticResource ModernCard}" Margin="0,0,0,10" Padding="12,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="🎯 TARGET DEVICE SCOPE:" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource ThemeAccent}" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                        <ComboBox x:Name="CmbTargetMouseScope" Width="300" Height="28" SelectionChanged="OnTargetMouseScopeChanged" ToolTip="Choose whether mouse blocks apply to Built-in Trackpad, External Mice, or All">
+                                            <ComboBoxItem Content="🌐 All Devices (Global Lock across Built-in &amp; External)" IsSelected="True" />
+                                            <ComboBoxItem Content="💻 Built-in Trackpad Only (Keep External USB &amp; BT Mouse Active)" />
+                                            <ComboBoxItem Content="🔌 External Mice Only (USB / Wire / Bluetooth)" />
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <Border Grid.Column="2" Background="{DynamicResource ThemeSurfaceNested}" BorderBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="1" CornerRadius="6" Padding="10,4">
+                                        <TextBlock x:Name="TxtMouseScopeDescription" Text="Locks apply globally to laptop trackpad &amp; all external mice" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" VerticalAlignment="Center" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- UNIFORM GRID OF INDIVIDUAL MOUSE CONTROLS -->
+                            <UniformGrid Columns="2" Margin="0,0,0,14">
+
+                                <!-- 1. LEFT CLICK -->
+                                <Border Style="{StaticResource ModernCard}" Margin="0,0,6,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="🖱️ Left Click (Primary Button)" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <TextBlock Text="Disables trackpad tap-to-click &amp; physical left click button" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                            <TextBlock x:Name="TxtLeftClickStatus" Text="Status: ACTIVE" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                        <CheckBox Grid.Column="1" x:Name="ChkBlockLeftClick" Style="{StaticResource ToggleSwitch}" Click="OnMouseActionToggleChanged" Tag="LeftClick">
+                                            <TextBlock Text="BLOCK" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 2. RIGHT CLICK -->
+                                <Border Style="{StaticResource ModernCard}" Margin="6,0,0,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="🖱️ Right Click (Secondary Button)" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <TextBlock Text="Disables right click button &amp; 2-finger trackpad tap context menu" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                            <TextBlock x:Name="TxtRightClickStatus" Text="Status: ACTIVE" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                        <CheckBox Grid.Column="1" x:Name="ChkBlockRightClick" Style="{StaticResource ToggleSwitch}" Click="OnMouseActionToggleChanged" Tag="RightClick">
+                                            <TextBlock Text="BLOCK" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 3. MIDDLE CLICK -->
+                                <Border Style="{StaticResource ModernCard}" Margin="0,6,6,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="🔘 Middle Click (Wheel Button)" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <TextBlock Text="Disables scroll wheel click &amp; 3-finger trackpad tap" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                            <TextBlock x:Name="TxtMiddleClickStatus" Text="Status: ACTIVE" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                        <CheckBox Grid.Column="1" x:Name="ChkBlockMiddleClick" Style="{StaticResource ToggleSwitch}" Click="OnMouseActionToggleChanged" Tag="MiddleClick">
+                                            <TextBlock Text="BLOCK" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 4. CURSOR MOVEMENT -->
+                                <Border Style="{StaticResource ModernCard}" Margin="6,6,0,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="🖐️ Trackpad / Mouse Movement" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <TextBlock Text="Freezes cursor position; prevents accidental palm brushes while typing" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                            <TextBlock x:Name="TxtMouseMoveStatus" Text="Status: ACTIVE" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                        <CheckBox Grid.Column="1" x:Name="ChkBlockMouseMove" Style="{StaticResource ToggleSwitch}" Click="OnMouseActionToggleChanged" Tag="MouseMove">
+                                            <TextBlock Text="BLOCK" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 5. SCROLL UP -->
+                                <Border Style="{StaticResource ModernCard}" Margin="0,6,6,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="🔼 Scroll Up (Wheel Forward / Swipe Down)" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <TextBlock Text="Blocks upward scrolling only; lets you scroll down without jumping back" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                            <TextBlock x:Name="TxtScrollUpStatus" Text="Status: ACTIVE" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                        <CheckBox Grid.Column="1" x:Name="ChkBlockScrollUp" Style="{StaticResource ToggleSwitch}" Click="OnMouseActionToggleChanged" Tag="ScrollUp">
+                                            <TextBlock Text="BLOCK" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 6. SCROLL DOWN -->
+                                <Border Style="{StaticResource ModernCard}" Margin="6,6,0,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="🔽 Scroll Down (Wheel Backward / Swipe Up)" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <TextBlock Text="Blocks downward scrolling only; keeps content pinned at current position" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                            <TextBlock x:Name="TxtScrollDownStatus" Text="Status: ACTIVE" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                        <CheckBox Grid.Column="1" x:Name="ChkBlockScrollDown" Style="{StaticResource ToggleSwitch}" Click="OnMouseActionToggleChanged" Tag="ScrollDown">
+                                            <TextBlock Text="BLOCK" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 7. MASTER VERTICAL SCROLL -->
+                                <Border Style="{StaticResource ModernCard}" Margin="0,6,6,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="📜 Master Vertical Scroll (Both Up &amp; Down)" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <TextBlock Text="Disables all 2-finger vertical trackpad gestures &amp; mouse wheels" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                            <TextBlock x:Name="TxtScrollWheelStatus" Text="Status: ACTIVE" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                        <CheckBox Grid.Column="1" x:Name="ChkBlockScrollWheel" Style="{StaticResource ToggleSwitch}" Click="OnMouseActionToggleChanged" Tag="ScrollWheel">
+                                            <TextBlock Text="BLOCK" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 8. HORIZONTAL SCROLL & SIDE BUTTONS -->
+                                <Border Style="{StaticResource ModernCard}" Margin="6,6,0,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="↔️ Side Buttons &amp; Tilt Scroll" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                            <TextBlock Text="Disables browser Back/Forward thumb buttons &amp; horizontal tilt wheel" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                            <TextBlock x:Name="TxtSideButtonsStatus" Text="Status: ACTIVE" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                        <CheckBox Grid.Column="1" x:Name="ChkBlockSideButtons" Style="{StaticResource ToggleSwitch}" Click="OnMouseActionToggleChanged" Tag="SideButtons">
+                                            <TextBlock Text="BLOCK" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeBlockedRed}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+
+                            </UniformGrid>
+
+                            <!-- QUICK KEYBOARD SCROLL GUIDE -->
+                            <Border Style="{StaticResource NestedSurface}" Margin="0,0,0,12" Padding="12,8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="💡" FontSize="16" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="KEYBOARD SCROLL ALTERNATIVES (When Mouse / Trackpad is Disabled):" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource ThemeAccent}" />
+                                        <TextBlock Text="• Page Down / Page Up: Fast full-page scroll   |   • Down (↓) / Up (↑) Arrows: Line-by-line scroll   |   • Space / Shift+Space: Web &amp; document scroll down/up" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <!-- VISUAL TOUCHPAD INTERACTIVE DIAGRAM -->
+                            <Border Style="{StaticResource ModernCard}">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="VISUAL LAPTOP TRACKPAD DIAGRAM" FontSize="11.5" FontWeight="Bold" Foreground="{DynamicResource ThemeTextSecondary}" HorizontalAlignment="Center" Margin="0,0,0,10" />
+                                    
+                                    <!-- Laptop Palmrest Bezel -->
+                                    <Border Width="380" Height="200" Background="{DynamicResource ThemeSurfaceNested}" BorderBrush="{DynamicResource ThemeBorder}" BorderThickness="2" CornerRadius="12" Padding="7">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <!-- Touch Surface (Move) -->
+                                            <Border Grid.Row="0" x:Name="DiagTouchSurface" Background="{DynamicResource ThemeCardBg}" CornerRadius="8,8,0,0" Margin="0,0,0,4"
+                                                    BorderBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="1">
+                                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <TextBlock Text="🖐️ TRACKPAD TOUCH SURFACE" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource ThemeAccent}" HorizontalAlignment="Center" />
+                                                    <TextBlock Text="(Cursor Movement &amp; 2-Finger Gestures)" FontSize="9.5" Foreground="{DynamicResource ThemeTextSecondary}" HorizontalAlignment="Center" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Bottom Click Buttons (Left & Right) -->
+                                            <Grid Grid.Row="1" Height="48">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="2" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Left Click Zone -->
+                                                <Border Grid.Column="0" x:Name="DiagLeftButton" Background="{DynamicResource ThemeCardBg}" CornerRadius="0,0,0,8" Margin="0,0,2,0"
+                                                        BorderBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="1,0,0,1">
+                                                    <TextBlock Text="LEFT BUTTON" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeActiveGreen}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+
+                                                <!-- Divider -->
+                                                <Rectangle Grid.Column="1" Fill="{DynamicResource ThemeBorder}" />
+
+                                                <!-- Right Click Zone -->
+                                                <Border Grid.Column="2" x:Name="DiagRightButton" Background="{DynamicResource ThemeCardBg}" CornerRadius="0,0,8,0" Margin="2,0,0,0"
+                                                        BorderBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="0,0,1,1">
+                                                    <TextBlock Text="RIGHT BUTTON" FontWeight="Bold" FontSize="10.5" Foreground="{DynamicResource ThemeActiveGreen}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ============================================== -->
+                    <!-- TAB 3 CONTENT: LAPTOP BUILT-IN HARDWARE (PnP) -->
+                    <!-- ============================================== -->
+                    <Grid x:Name="TabContentHardware" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Style="{StaticResource ModernCard}" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="WINDOWS DEVICE MANAGER HARDWARE CONTROLLER" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                    <TextBlock Text="Direct driver-level PnP hardware disable/enable for Dell Touchpad &amp; built-in PS/2 keyboard." FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,2,0,0" />
+                                </StackPanel>
+                                <Button Grid.Column="1" Style="{StaticResource ActionButton}" Content="🔄 Refresh Hardware Devices" Click="OnRefreshDevicesClicked" />
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="1" Style="{StaticResource ModernCard}">
+                            <DataGrid x:Name="GridDevices" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                      Background="{DynamicResource ThemeSurfaceNested}" 
+                                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Device Name" Binding="{Binding FriendlyName}" Width="220" IsReadOnly="True" />
+                                    <DataGridTemplateColumn Header="Connection Type" Width="140">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{DynamicResource ThemeSurfaceNested}" BorderBrush="{Binding ConnectionBadgeColor}" BorderThickness="1" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left">
+                                                    <TextBlock Text="{Binding ConnectionBadge}" Foreground="{Binding ConnectionBadgeColor}" FontWeight="Bold" FontSize="10" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Class" Binding="{Binding DeviceClass}" Width="80" IsReadOnly="True" />
+                                    <DataGridTextColumn Header="Instance ID" Binding="{Binding InstanceId}" Width="260" IsReadOnly="True" />
+                                    <DataGridTemplateColumn Header="Status" Width="140">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding StatusSummary}" Foreground="{Binding StatusColor}" FontWeight="Bold" Margin="6,2" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Hardware Action" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="{Binding ToggleButtonText}" Style="{StaticResource ActionButton}" Padding="10,2" Margin="4,2" Click="OnToggleHardwareDeviceClicked" Tag="{Binding}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                    </Grid>
+
+                    <!-- ============================================== -->
+                    <!-- TAB 4 CONTENT: LIVE TEST ZONE & MONITOR       -->
+                    <!-- ============================================== -->
+                    <Grid x:Name="TabContentTestZone" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Interactive Test Pads (Typing pad & Click pad) -->
+                        <Grid Grid.Row="0" Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="14" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Keyboard Test Pad -->
+                            <Border Grid.Column="0" Style="{StaticResource ModernCard}">
+                                <StackPanel>
+                                    <TextBlock Text="⌨️ KEYBOARD LIVE TEST PAD" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" Margin="0,0,0,3" />
+                                    <TextBlock Text="Click inside and type. Blocked keys will NOT appear in this box!" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,0,0,6" />
+                                    <TextBox x:Name="TxtTestInput" Height="74" TextWrapping="Wrap" AcceptsReturn="True" Padding="6" FontSize="12" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                        <TextBlock x:Name="TxtTestAllowedCount" Text="Keystrokes: 0 allowed" FontSize="10.5" Foreground="{DynamicResource ThemeActiveGreen}" Margin="0,0,12,0" />
+                                        <Button Style="{StaticResource ActionButton}" Content="Clear Box" Padding="8,2" Click="OnClearTestBoxClicked" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Mouse Click Test Pad -->
+                            <Border Grid.Column="2" Style="{StaticResource ModernCard}">
+                                <StackPanel>
+                                    <TextBlock Text="🖱️ MOUSE / TRACKPAD LIVE TEST SURFACE" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource ThemeTextPrimary}" Margin="0,0,0,3" />
+                                    <TextBlock Text="Click or scroll here. If blocked, clicks and moves will be swallowed!" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,0,0,6" />
+                                    
+                                    <Border x:Name="PadMouseTest" Height="74" Background="{DynamicResource ThemeSurfaceNested}" BorderBrush="{DynamicResource ThemeBorder}" BorderThickness="1" CornerRadius="6"
+                                            MouseDown="OnPadMouseDown" MouseWheel="OnPadMouseWheel" Cursor="Cross">
+                                        <TextBlock x:Name="TxtMouseTestFeedback" Text="CLICK OR SCROLL HERE TO TEST" Foreground="{DynamicResource ThemeAccent}" FontWeight="Bold" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    
+                                    <TextBlock Text="Tests: Left Click, Right Click, Middle Click, Scroll Wheel" FontSize="9.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="0,5,0,0" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Real-Time Event Log -->
+                        <Border Grid.Row="1" Style="{StaticResource ModernCard}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Margin="0,0,0,6">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="📜 REAL-TIME INPUT EVENT STREAM" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeTextPrimary}" />
+                                        <TextBlock Text=" (Shows live blocked vs allowed events)" FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" Margin="5,1,0,0" />
+                                    </StackPanel>
+                                    <Button HorizontalAlignment="Right" Style="{StaticResource ActionButton}" Content="Clear Log" Padding="8,2" Click="OnClearLogClicked" />
+                                </Grid>
+
+                                <DataGrid Grid.Row="1" x:Name="GridEventLogs" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                          Background="{DynamicResource ThemeSurfaceNested}" 
+                                          GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="0"
+                                          HeadersVisibility="Column" IsReadOnly="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Timestamp" Binding="{Binding TimeStamp}" Width="90" />
+                                        <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="75" />
+                                        <DataGridTextColumn Header="Device Origin" Binding="{Binding DeviceOrigin}" Width="160" />
+                                        <DataGridTextColumn Header="Key / Action" Binding="{Binding Target}" Width="220" />
+                                        <DataGridTemplateColumn Header="Action Result" Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ActionText}" Foreground="{Binding ActionColor}" FontWeight="Bold" Margin="6,2" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+
+                </Grid>
+            </Grid>
+
+            <!-- ==================================================== -->
+            <!-- 3. FOOTER STATUS BAR                                 -->
+            <!-- ==================================================== -->
+            <Border Grid.Row="2" Background="{DynamicResource ThemeHeaderBg}" BorderBrush="{DynamicResource ThemeBorderSubtle}" BorderThickness="0,1,0,0" Padding="14,0">
+                <Grid VerticalAlignment="Center">
+                    <TextBlock Text="🛡️ Failsafe Hotkey: Hold ESC for 2.5s OR press Ctrl+Shift+Alt+F12 to immediately restore all inputs anytime." FontSize="10.5" Foreground="{DynamicResource ThemeTextSecondary}" VerticalAlignment="Center" />
+                    <TextBlock x:Name="TxtFooterSummary" Text="Active Locks: 0 Keys | 0 Mouse Actions" HorizontalAlignment="Right" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource ThemeActiveGreen}" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+        </Grid>
+    </Border>
+</Window>

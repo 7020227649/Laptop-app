@@ -1,0 +1,11 @@
+C:\Users\Sagar\Downloads\Laptop app\bin\Release\LaptopInputControl.exe
+C:\Users\Sagar\Downloads\Laptop app\bin\Release\LaptopInputControl.pdb
+C:\Users\Sagar\Downloads\Laptop app\obj\x64\Release\LaptopInputControl.csprojResolveAssemblyReference.cache
+C:\Users\Sagar\Downloads\Laptop app\obj\x64\Release\Views\MainWindow.baml
+C:\Users\Sagar\Downloads\Laptop app\obj\x64\Release\App.baml
+C:\Users\Sagar\Downloads\Laptop app\obj\x64\Release\Views\MainWindow.g.cs
+C:\Users\Sagar\Downloads\Laptop app\obj\x64\Release\App.g.cs
+C:\Users\Sagar\Downloads\Laptop app\obj\x64\Release\LaptopInputControl_MarkupCompile.cache
+C:\Users\Sagar\Downloads\Laptop app\obj\x64\Release\LaptopInputControl.g.resources
+C:\Users\Sagar\Downloads\Laptop app\obj\x64\Release\LaptopInputControl.exe
+C:\Users\Sagar\Downloads\Laptop app\obj\x64\Release\LaptopInputControl.pdb

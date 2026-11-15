@@ -1,0 +1,3 @@
+@echo off
+echo Launching Laptop Input Shield Setup Wizard...
+start "" "%~dp0Setup.exe"

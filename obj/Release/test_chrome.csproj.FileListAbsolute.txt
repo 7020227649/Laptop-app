@@ -1,0 +1,7 @@
+C:\Users\Sagar\Downloads\Laptop app\bin\Release\TestChrome.exe
+C:\Users\Sagar\Downloads\Laptop app\obj\Release\test_chrome.csprojResolveAssemblyReference.cache
+C:\Users\Sagar\Downloads\Laptop app\obj\Release\test_win.baml
+C:\Users\Sagar\Downloads\Laptop app\obj\Release\test_win.g.cs
+C:\Users\Sagar\Downloads\Laptop app\obj\Release\TestChrome_MarkupCompile.cache
+C:\Users\Sagar\Downloads\Laptop app\obj\Release\TestChrome.g.resources
+C:\Users\Sagar\Downloads\Laptop app\obj\Release\TestChrome.exe
